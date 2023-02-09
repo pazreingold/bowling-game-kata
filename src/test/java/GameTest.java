@@ -54,4 +54,21 @@ public class GameTest {
         game.roll(1);
         assertEquals(14, game.score());
     }
+
+    @Test
+    void ScoreHalfGameWithSpareAndStrikes() {
+        game.roll(10);
+
+        game.roll(1);
+        game.roll(1);
+
+        game.roll(0);
+        game.roll(10);
+
+        game.roll(1);
+        game.roll(1);
+
+        game.roll(10);
+        assertEquals(37, game.score());
+    }
 }
