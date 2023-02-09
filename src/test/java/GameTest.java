@@ -14,4 +14,12 @@ public class GameTest {
         game.roll(1);
         assertEquals(1, game.score());
     }
+
+    @Test
+    void ScoreIs2WhenRoll1And1() {
+        Game game = new Game();
+        game.roll(1);
+        game.roll(1);
+        assertEquals(2, game.score());
+    }
 }
