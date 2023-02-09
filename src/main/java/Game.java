@@ -12,7 +12,15 @@ public class Game {
 
     public void roll(int i) {
         rolls.add(i);
-        if (isSpare()) {
+        if (i == 10 && rollCounter % 2 == 0){
+            rollCounter++;
+            rolls.add(0);
+        }
+
+        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10){
+            score += i * 2;
+        }
+        else if (isSpare()) {
             score += i * 2;
         } else {
             score += i;
