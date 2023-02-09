@@ -29,4 +29,12 @@ public class GameTest {
         game.roll(1);
         assertEquals(2, game.score());
     }
+
+    @Test
+    void ScoreSpare() {
+        game.roll(9);
+        game.roll(1);
+        game.roll(1);
+        assertEquals(12, game.score());
+    }
 }
