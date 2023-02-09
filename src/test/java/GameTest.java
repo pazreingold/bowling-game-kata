@@ -37,4 +37,13 @@ public class GameTest {
         game.roll(1);
         assertEquals(12, game.score());
     }
+
+    @Test
+    void ScoreSpareInAFrame() {
+        game.roll(1);
+        game.roll(1);
+        game.roll(9);
+        game.roll(1);
+        assertEquals(12, game.score());
+    }
 }

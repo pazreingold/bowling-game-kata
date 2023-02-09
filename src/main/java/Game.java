@@ -13,12 +13,11 @@ public class Game {
 
     public void roll(int i) {
         rolls.add(i);
-        rollCounter++;
-        if (rollCounter > 1 && (rolls.get(rollCounter - 1) + rolls.get(rollCounter - 2) == 10)) {
+        if (rollCounter > 1 && rollCounter % 2 == 0 && (rolls.get(rollCounter - 1) + rolls.get(rollCounter - 2) == 10)) {
             score += i * 2;
         } else {
             score += i;
         }
-
+        rollCounter++;
     }
 }
