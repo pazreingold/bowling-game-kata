@@ -7,4 +7,11 @@ public class GameTest {
     void ScoreIs0WhenGameStarts() {
         assertEquals(0, new Game().score());
     }
+
+    @Test
+    void ScoreIs1WhenRoll1() {
+        Game game = new Game();
+        game.roll(1);
+        assertEquals(1, game.score());
+    }
 }
