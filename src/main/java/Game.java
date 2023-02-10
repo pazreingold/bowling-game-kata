@@ -11,30 +11,51 @@ public class Game {
     }
 
     public void roll(int i) {
-        if (!isSpare() && rolls.size() > 19) {
-            throw new IllegalStateException("Game is Over");
-        }
-        if (rolls.size() > 20) {
-            throw new IllegalStateException("Game is Over");
-        }
+        validateGameIsOver();
 
         rolls.add(i);
-        if (i == 10 && rollCounter % 2 == 0) {
+
+        if (isStrike(i)) {
             rollCounter++;
             rolls.add(0);
         }
 
-        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10 && rollCounter < 21) {
-            score += i * 2;
-        } else if (isSpare()) {
-            score += i * 2;
-        } else {
-            score += i;
-        }
+        score += calculateScore(i);
+
         rollCounter++;
     }
 
-    private boolean isSpare() {
-        return rollCounter > 1 && rollCounter % 2 == 0 && (rolls.get(rollCounter - 1) + rolls.get(rollCounter - 2) == 10);
+    private void validateGameIsOver() {
+        if (!ShouldDoubleScoreInFirstRoll() && rolls.size() > 19 || rolls.size() > 20) {
+            throw new IllegalStateException("Game is Over");
+        }
+    }
+
+    private int calculateScore(int i) {
+        return ShouldDoubleScoreInFirstRoll() || shouldDoubleScoreInSecondRoll() ? i * 2 : i;
+    }
+
+    private boolean ShouldDoubleScoreInFirstRoll() {
+        return rollCounter > 1 && isFirstRollInFrame() && hadSpare();
+    }
+
+    private boolean shouldDoubleScoreInSecondRoll() {
+        return rollCounter > 1 && isSecondRollInFrame() && rolls.get(rollCounter - 3) == 10 && rollCounter < 21;
+    }
+
+    private boolean hadSpare() {
+        return rolls.get(rollCounter - 1) + rolls.get(rollCounter - 2) == 10;
+    }
+
+    private boolean isStrike(int i) {
+        return i == 10 && isFirstRollInFrame();
+    }
+
+    private boolean isFirstRollInFrame() {
+        return rollCounter % 2 == 0;
+    }
+
+    private boolean isSecondRollInFrame() {
+        return rollCounter % 2 == 1;
     }
 }
