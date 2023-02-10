@@ -24,7 +24,7 @@ public class Game {
             rolls.add(0);
         }
 
-        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10) {
+        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10 && rollCounter < 21) {
             score += i * 2;
         } else if (isSpare()) {
             score += i * 2;

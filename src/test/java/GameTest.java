@@ -95,4 +95,17 @@ public class GameTest {
         Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(10));
         assertEquals("Game is Over", exception.getMessage());
     }
+
+    @Test
+    void GetExtraRollIfStrikeInTheLastFrame() {
+        IntStream.iterate(1, i -> i + 1).limit(18)
+                .forEach(i -> game.roll(0));
+        game.roll(10);
+        game.roll(10);
+
+        assertEquals(20, game.score());
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(10));
+        assertEquals("Game is Over", exception.getMessage());
+    }
 }
