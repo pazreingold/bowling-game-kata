@@ -11,9 +11,13 @@ public class Game {
     }
 
     public void roll(int i) {
-        if (rolls.size() > 19) {
+        if (!isSpare() && rolls.size() > 19) {
             throw new IllegalStateException("Game is Over");
         }
+        if (rolls.size() > 20) {
+            throw new IllegalStateException("Game is Over");
+        }
+
         rolls.add(i);
         if (i == 10 && rollCounter % 2 == 0) {
             rollCounter++;
