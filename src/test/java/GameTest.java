@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
@@ -70,5 +72,13 @@ public class GameTest {
 
         game.roll(10);
         assertEquals(37, game.score());
+    }
+
+    @Test
+    void GameIsNoMoreThan20Rolls() {
+        IntStream.iterate(1, i -> i + 1).limit(20)
+                .forEach(i -> game.roll(0));
+        Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(0));
+        assertEquals("Game is Over", exception.getMessage());
     }
 }

@@ -11,16 +11,18 @@ public class Game {
     }
 
     public void roll(int i) {
+        if (rolls.size() > 19) {
+            throw new IllegalStateException("Game is Over");
+        }
         rolls.add(i);
-        if (i == 10 && rollCounter % 2 == 0){
+        if (i == 10 && rollCounter % 2 == 0) {
             rollCounter++;
             rolls.add(0);
         }
 
-        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10){
+        if (rollCounter > 1 && rollCounter % 2 == 1 && rolls.get(rollCounter - 3) == 10) {
             score += i * 2;
-        }
-        else if (isSpare()) {
+        } else if (isSpare()) {
             score += i * 2;
         } else {
             score += i;
