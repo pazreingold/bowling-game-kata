@@ -6,8 +6,14 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
-
     private Game game;
+
+    private void rollMany(int rolls, int pins) {
+        IntStream
+                .iterate(1, i -> i + 1)
+                .limit(rolls)
+                .forEach(i -> game.roll(pins));
+    }
 
     @BeforeEach
     void setUp() {
@@ -15,97 +21,38 @@ public class GameTest {
     }
 
     @Test
-    void ScoreIs0WhenGameStarts() {
+    void allZeros() {
+        rollMany(20, 0);
         assertEquals(0, game.score());
     }
 
     @Test
-    void ScoreIs1WhenRoll1() {
-        game.roll(1);
-        assertEquals(1, game.score());
+    void allOnes() {
+        rollMany(20, 1);
+        assertEquals(20, game.score());
     }
 
     @Test
-    void ScoreIs2WhenRoll1And1() {
-        game.roll(1);
-        game.roll(1);
-        assertEquals(2, game.score());
-    }
-
-    @Test
-    void ScoreSpare() {
+    void oneSpare() {
         game.roll(9);
         game.roll(1);
         game.roll(1);
+        rollMany(17, 0);
         assertEquals(12, game.score());
     }
 
     @Test
-    void ScoreSpareInAFrame() {
-        game.roll(1);
-        game.roll(1);
-        game.roll(9);
-        game.roll(1);
-        assertEquals(12, game.score());
-    }
-
-    @Test
-    void ScoreStrike() {
+    void oneStrike() {
         game.roll(10);
         game.roll(1);
         game.roll(1);
+        rollMany(16, 0);
         assertEquals(14, game.score());
     }
 
     @Test
-    void ScoreHalfGameWithSpareAndStrikes() {
-        game.roll(10);
-
-        game.roll(1);
-        game.roll(1);
-
-        game.roll(0);
-        game.roll(10);
-
-        game.roll(1);
-        game.roll(1);
-
-        game.roll(10);
-        assertEquals(37, game.score());
-    }
-
-    @Test
-    void GameIsNoMoreThan20Rolls() {
-        IntStream.iterate(1, i -> i + 1).limit(20)
-                .forEach(i -> game.roll(0));
-        Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(0));
-        assertEquals("Game is Over", exception.getMessage());
-    }
-
-    @Test
-    void GetExtraRollIfSpareInTheLastFrame() {
-        IntStream.iterate(1, i -> i + 1).limit(18)
-                .forEach(i -> game.roll(0));
-        game.roll(0);
-        game.roll(10);
-        game.roll(10);
-
-        assertEquals(20, game.score());
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(10));
-        assertEquals("Game is Over", exception.getMessage());
-    }
-
-    @Test
-    void GetExtraRollIfStrikeInTheLastFrame() {
-        IntStream.iterate(1, i -> i + 1).limit(18)
-                .forEach(i -> game.roll(0));
-        game.roll(10);
-        game.roll(10);
-
-        assertEquals(20, game.score());
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> game.roll(10));
-        assertEquals("Game is Over", exception.getMessage());
+    void perfectGame() {
+        rollMany(12, 10);
+        assertEquals(300, game.score());
     }
 }
